@@ -1154,17 +1154,19 @@ exit_subroutine:
     LDA pad1
     AND #btn_switch
     BEQ check_stage
-    LDA scrollvalue
-    ADC #$01
-    STA scrollvalue
-      ; vblankwait:       ; wait for another vblank before continuing
-      ; BIT PPUSTATUS
-      ; BPL vblankwait
+    ; LDA scrollvalue
+    ; ADC #$01
+    ; STA scrollvalue
+    vblankwait:       ; wait for another vblank before continuing
+    BIT PPUSTATUS
+    BPL vblankwait
+    lda #$3c
+    sta player_y
 
-      ; LDA #%10010001  ; turn on NMIs, sprites use first pattern table
-      ; STA PPUCTRL
-      ; LDA #%00011110  ; turn on screen
-      ; STA PPUMASK
+    LDA #%10010001  ; turn on NMIs, sprites use first pattern table
+    STA PPUCTRL
+    LDA #%00011110  ; turn on screen
+    STA PPUMASK
   check_stage:
     LDA pad1
     AND #btn_stage
